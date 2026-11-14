@@ -7,6 +7,9 @@ import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
 import it.workflow.predictor.reliability.UniformRetryTask;
 
+import java.io.PrintWriter;
+import java.io.IOException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +26,7 @@ public class ForkJoinUniformWorkflowRetry {
                 new UniformRetryTask("T2", new BigDecimal("2"), new BigDecimal("3"),
                         new RetryConfig(new BigDecimal("2.5"), 1))
         );
-        String bound = "15";
+        String bound = "20";
         String step = "0.05";
         List<RetryScenario> scenarios = ScenarioEnumerator.enumerate(tasks);
         List<double[]> cdfs = new ArrayList<>();
@@ -37,6 +40,37 @@ public class ForkJoinUniformWorkflowRetry {
         double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
         int index = new BigDecimal("5.0").divide(new BigDecimal(step)).intValueExact();
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
+
+        try (PrintWriter writer =
+                     new PrintWriter("python/fork_join_retry_cdf.csv")) {
+
+            // Intestazione del file CSV
+            writer.println("time,cdf");
+
+            double timeStep = new BigDecimal(step).doubleValue();
+
+            // Esportiamo tutta la CDF
+            for (int i = 0; i < finalCdf.length; i++) {
+
+                double time = i * timeStep;
+                double probability = finalCdf[i];
+
+                writer.printf(
+                        Locale.US,
+                        "%.5f,%.8f%n",
+                        time,
+                        probability
+                );
+            }
+
+            System.out.println(
+                    "CDF esportata in fork_join_retry_cdf.csv"
+            );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
