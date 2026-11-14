@@ -6,6 +6,13 @@ import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
 import it.workflow.predictor.reliability.UniformRetryTask;
+import org.oristool.eulero.modeling.Activity;
+import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.Simple;
+import org.oristool.models.stpn.RewardRate;
+import org.oristool.models.stpn.TransientSolution;
+import org.oristool.models.stpn.trees.DeterministicEnablingState;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +46,10 @@ public final class TwoTaskSequentialDemo {
         double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
         int index = new BigDecimal("5.0").divide(new BigDecimal(step)).intValueExact();
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
+
+
+
+
 
 //        double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
 //
