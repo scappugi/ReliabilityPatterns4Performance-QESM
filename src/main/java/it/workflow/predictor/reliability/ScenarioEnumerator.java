@@ -11,12 +11,12 @@ import java.util.Set;
 public final class ScenarioEnumerator {
     private ScenarioEnumerator() {}
 
-    public static List<RetryScenario> enumerate(List<UniformRetryTask> tasks) {
+    public static List<RetryScenario> enumerate(List<? extends RetryTask> tasks) {
         if (tasks == null || tasks.isEmpty()) {
             throw new IllegalArgumentException("Il workflow deve contenere task");
         }
         Set<String> names = new HashSet<>();
-        for (UniformRetryTask task : tasks) {
+        for (RetryTask task : tasks) {
             if (task == null || !names.add(task.name())) {
                 throw new IllegalArgumentException("Task nullo o nomi duplicati");
             }
@@ -26,14 +26,14 @@ public final class ScenarioEnumerator {
         return result;
     }
 
-    private static void visit(List<UniformRetryTask> tasks, int index,
+    private static void visit(List<? extends RetryTask> tasks, int index,
                               Map<String, Integer> current, double weight,
                               List<RetryScenario> output) {
         if (index == tasks.size()) {
             output.add(new RetryScenario(current, weight));
             return;
         }
-        UniformRetryTask task = tasks.get(index);
+        RetryTask task = tasks.get(index);
         for (int n = 0; n <= task.retry().maxRetries(); n++) {
             double p = RetryModel.taskProbability(task, n);
             if (p == 0.0) continue; // evita rami condizionati impossibili (p=0)

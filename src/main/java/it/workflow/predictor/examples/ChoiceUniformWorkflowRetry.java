@@ -37,7 +37,19 @@ public final class ChoiceUniformWorkflowRetry {
                         new BigDecimal("1"),
                         new BigDecimal("5"),
                         new RetryConfig(new BigDecimal("3"), 2)
-                )
+                ),
+        new UniformRetryTask(
+                "T3",
+                new BigDecimal("2"),
+                new BigDecimal("7"),
+                new RetryConfig(new BigDecimal("5"), 2)
+        ),
+        new UniformRetryTask(
+                "T4",
+                new BigDecimal("5"),
+                new BigDecimal("8"),
+                new RetryConfig(new BigDecimal("6"), 2)
+        )
         );
 
         List<UniformRetryTask> tasksT2 = Arrays.asList(
@@ -70,7 +82,7 @@ public final class ChoiceUniformWorkflowRetry {
                     ScenarioEvaluator.evaluate(
                             tasksT1,
                             scenario,
-                            ScenarioEvaluator.Composition.SEQUENCE,
+                            ScenarioEvaluator.Composition.FORK_JOIN,
                             bound,
                             step,
                             error

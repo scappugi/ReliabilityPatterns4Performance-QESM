@@ -2,6 +2,7 @@ package it.workflow.predictor.evaluation;
 
 import it.workflow.predictor.reliability.ConditionalDistribution;
 import it.workflow.predictor.reliability.RetryScenario;
+import it.workflow.predictor.reliability.RetryTask;
 import it.workflow.predictor.reliability.UniformRetryTask;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,14 +22,14 @@ public final class ScenarioEvaluator {
     public enum Composition { SEQUENCE, FORK_JOIN }
 
     /** Rimpiazza un task con: n*timeout + tentativo finale (condizionato oppure originale). */
-    public static Activity taskInScenario(UniformRetryTask task, int n) {
+    public static Activity taskInScenario(RetryTask task, int n) {
         int c = task.retry().maxRetries();
         if (n < 0 || n > c) throw new IllegalArgumentException("Scenario non valido");
         String id = task.name() + "_retry" + n;
 
         Activity lastAttempt = n < c
-            ? ConditionalDistribution.uniformSuccess(task, id + "_success")
-            : task.originalActivity("_last_retry" + n);
+                ? task.successfulAttempt(id + "_success")
+                : task.originalActivity("_last_retry" + n);
 
         if (n == 0) return lastAttempt;
 
@@ -39,12 +40,12 @@ public final class ScenarioEvaluator {
         return DAG.sequence(id, delay, lastAttempt);
     }
 
-    public static double[] evaluate(List<UniformRetryTask> tasks,
+    public static double[] evaluate(List<? extends RetryTask> tasks,
                                     RetryScenario scenario,
                                     Composition composition,
                                     String timeBound, String timeStep, String error) {
         List<Activity> activities = new ArrayList<>();
-        for (UniformRetryTask task : tasks) {
+        for (RetryTask task : tasks) {
             activities.add(taskInScenario(task, scenario.retryCount(task.name())));
         }
         Activity[] nodes = activities.toArray(new Activity[0]);

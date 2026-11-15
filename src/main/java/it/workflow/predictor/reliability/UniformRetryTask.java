@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.oristool.eulero.modeling.Simple;
 
 /** Dati minimi per una Simple uniforme di Eulero con una politica di retry. */
-public final class UniformRetryTask  {
+public final class UniformRetryTask implements RetryTask {
     private final String name;
     private final BigDecimal min;
     private final BigDecimal max;
@@ -36,4 +36,25 @@ public final class UniformRetryTask  {
     public Simple originalActivity(String suffix) {
         return Simple.uniform(name + suffix, min, max);
     }
+
+
+    @Override
+    public double cdf(double time) {
+
+        double a = min.doubleValue();
+        double b = max.doubleValue();
+
+        if (time <= a) return 0.0;
+        if (time >= b) return 1.0;
+
+        return (time - a) / (b - a);
+    }
+
+    @Override
+    public Simple successfulAttempt(String activityName) {
+        return ConditionalDistribution.uniformSuccess(
+                this, activityName
+        );
+    }
+
 }
