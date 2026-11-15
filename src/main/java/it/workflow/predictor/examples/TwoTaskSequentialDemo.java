@@ -43,35 +43,65 @@ public final class TwoTaskSequentialDemo {
             cdfs.add(ScenarioEvaluator.evaluate(tasks, scenario,
                 ScenarioEvaluator.Composition.SEQUENCE, bound, step, "0.0001"));
         }
-//        double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
-//        int index = new BigDecimal("5.0").divide(new BigDecimal(step)).intValueExact();
-//        System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
-//
-//
-
         double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
+        int index = new BigDecimal("5.0").divide(new BigDecimal(step)).intValueExact();
+        System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
 
-        double delta = new BigDecimal(step).doubleValue();
+        try (PrintWriter writer =
+                     new PrintWriter("python/sequence_retry_cdf.csv")) {
 
-        System.out.println("Tempo (s)\tCDF");
-
-        for (int i = 0; i < finalCdf.length; i++) {
-            double t = i * delta;
-
-            System.out.printf(Locale.US, "%.2f\t%.6f%n", t, finalCdf[i]);
-        }
-        try (PrintWriter writer = new PrintWriter("python/workflow_cdf.csv")) {
-
+            // Intestazione del file CSV
             writer.println("time,cdf");
 
-            for (int i = 0; i < finalCdf.length; i++) {
-                double t = i * new BigDecimal(step).doubleValue();
+            double timeStep = new BigDecimal(step).doubleValue();
 
-                writer.printf(Locale.US, "%.2f,%.8f%n", t, finalCdf[i]);
+            // Esportiamo tutta la CDF
+            for (int i = 0; i < finalCdf.length; i++) {
+
+                double time = i * timeStep;
+                double probability = finalCdf[i];
+
+                writer.printf(
+                        Locale.US,
+                        "%.5f,%.8f%n",
+                        time,
+                        probability
+                );
             }
+
+            System.out.println(
+                    "CDF esportata in sequential_retry_cdf.csv"
+            );
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+//        double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
+//
+//        double delta = new BigDecimal(step).doubleValue();
+//
+//        System.out.println("Tempo (s)\tCDF");
+//
+//        for (int i = 0; i < finalCdf.length; i++) {
+//            double t = i * delta;
+//
+//            System.out.printf(Locale.US, "%.2f\t%.6f%n", t, finalCdf[i]);
+//        }
+//        try (PrintWriter writer = new PrintWriter("python/workflow_cdf.csv")) {
+//
+//            writer.println("time,cdf");
+//
+//            for (int i = 0; i < finalCdf.length; i++) {
+//                double t = i * new BigDecimal(step).doubleValue();
+//
+//                writer.printf(Locale.US, "%.2f,%.8f%n", t, finalCdf[i]);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

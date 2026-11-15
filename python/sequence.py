@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # Leggiamo i due CSV
 no_retry = pd.read_csv("sequence_no_retry_cdf.csv")
-with_retry = pd.read_csv("workflow_cdf.csv")
+with_retry = pd.read_csv("sequence_retry_cdf.csv")
 
 plt.figure(figsize=(10, 6))
 
