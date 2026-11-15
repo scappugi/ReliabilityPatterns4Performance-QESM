@@ -6,12 +6,6 @@ import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
 import it.workflow.predictor.reliability.UniformRetryTask;
-import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
-import org.oristool.eulero.modeling.Simple;
-import org.oristool.models.stpn.RewardRate;
-import org.oristool.models.stpn.TransientSolution;
-import org.oristool.models.stpn.trees.DeterministicEnablingState;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,8 +16,8 @@ import java.io.PrintWriter;
 import java.io.IOException;
 
 /** Esempio successivo: T1 e T2 in sequenza, con 6 scenari complessivi. */
-public final class TwoTaskSequentialDemo {
-    private TwoTaskSequentialDemo() {}
+public final class SequentialUniformWorkflowRetry {
+    private SequentialUniformWorkflowRetry() {}
 
     public static void main(String[] args) {
         List<UniformRetryTask> tasks = Arrays.asList(
