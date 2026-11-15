@@ -16,7 +16,7 @@ Questo ZIP contiene il progetto completo (basato sullo starter originale): puoi 
 
 1. Reload Maven.
 2. Esegui `it.workflow.predictor.Main`: **un task**, tre scenari, confronto fra Eq.(4) e Eulero.
-3. Esegui `it.workflow.predictor.examples.SequentialUniformWorkflowRetry`: **due task sequenziali**, sei scenari.
+3. Esegui `it.workflow.predictor.workflowTypesExamples.Uniform.SequentialUniformRetry`: **due task sequenziali**, sei scenari.
 4. Esegui i test JUnit `RetryModelTest` (Maven > Lifecycle > test).
 
 ## Matematica implementata

@@ -1,4 +1,4 @@
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.Simple;
@@ -21,9 +21,9 @@ import java.util.Locale;
  * Viene eseguito uno solo dei due task,
  * con probabilità 0.5 per ciascuno.
  */
-public final class ChoiceUniformWorkflow {
+public final class ChoiceUniform {
 
-    private ChoiceUniformWorkflow() {}
+    private ChoiceUniform() {}
 
     public static void main(String[] args) {
 

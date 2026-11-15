@@ -1,9 +1,10 @@
 
-package it.workflow.predictor.reliability;
+package it.workflow.predictor.reliability.distributionTypes;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import it.workflow.predictor.reliability.RetryConfig;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.math.OmegaBigDecimal;
 import org.oristool.models.stpn.trees.StochasticTransitionFeature;

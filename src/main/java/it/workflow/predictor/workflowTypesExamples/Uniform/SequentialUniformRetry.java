@@ -1,30 +1,30 @@
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import it.workflow.predictor.evaluation.ScenarioEvaluator;
 import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
-import it.workflow.predictor.reliability.UniformRetryTask;
-
-import java.io.PrintWriter;
-import java.io.IOException;
+import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.io.PrintWriter;
+import java.io.IOException;
 
-public class ForkJoinUniformWorkflowRetry {
-    private ForkJoinUniformWorkflowRetry() {}
+/** Esempio successivo: T1 e T2 in sequenza, con 6 scenari complessivi. */
+public final class SequentialUniformRetry {
+    private SequentialUniformRetry() {}
 
     public static void main(String[] args) {
         List<UniformRetryTask> tasks = Arrays.asList(
-                new UniformRetryTask("T1", new BigDecimal("1"), new BigDecimal("5"),
-                        new RetryConfig(new BigDecimal("3"), 2)),
-                new UniformRetryTask("T2", new BigDecimal("2"), new BigDecimal("3"),
-                        new RetryConfig(new BigDecimal("2.5"), 1))
+            new UniformRetryTask("T1", new BigDecimal("1"), new BigDecimal("5"),
+                new RetryConfig(new BigDecimal("3"), 2)),
+            new UniformRetryTask("T2", new BigDecimal("2"), new BigDecimal("3"),
+                new RetryConfig(new BigDecimal("2.5"), 1))
         );
         String bound = "20";
         String step = "0.05";
@@ -35,14 +35,14 @@ public class ForkJoinUniformWorkflowRetry {
         for (RetryScenario scenario : scenarios) {
             System.out.println(scenario);
             cdfs.add(ScenarioEvaluator.evaluate(tasks, scenario,
-                    ScenarioEvaluator.Composition.FORK_JOIN, bound, step, "0.0001"));
+                ScenarioEvaluator.Composition.SEQUENCE, bound, step, "0.0001"));
         }
         double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
         int index = new BigDecimal("5.0").divide(new BigDecimal(step)).intValueExact();
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
 
         try (PrintWriter writer =
-                     new PrintWriter("python/fork_join_retry_cdf.csv")) {
+                     new PrintWriter("python/sequence_retry_cdf.csv")) {
 
             // Intestazione del file CSV
             writer.println("time,cdf");
@@ -64,13 +64,38 @@ public class ForkJoinUniformWorkflowRetry {
             }
 
             System.out.println(
-                    "CDF esportata in fork_join_retry_cdf.csv"
+                    "CDF esportata in sequential_retry_cdf.csv"
             );
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    }
 
+
+//        double[] finalCdf = ScenarioMixer.mix(scenarios, cdfs);
+//
+//        double delta = new BigDecimal(step).doubleValue();
+//
+//        System.out.println("Tempo (s)\tCDF");
+//
+//        for (int i = 0; i < finalCdf.length; i++) {
+//            double t = i * delta;
+//
+//            System.out.printf(Locale.US, "%.2f\t%.6f%n", t, finalCdf[i]);
+//        }
+//        try (PrintWriter writer = new PrintWriter("python/workflow_cdf.csv")) {
+//
+//            writer.println("time,cdf");
+//
+//            for (int i = 0; i < finalCdf.length; i++) {
+//                double t = i * new BigDecimal(step).doubleValue();
+//
+//                writer.printf(Locale.US, "%.2f,%.8f%n", t, finalCdf[i]);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 }

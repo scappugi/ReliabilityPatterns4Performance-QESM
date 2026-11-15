@@ -1,9 +1,8 @@
 package it.workflow.predictor.evaluation;
 
-import it.workflow.predictor.reliability.ConditionalDistribution;
 import it.workflow.predictor.reliability.RetryScenario;
-import it.workflow.predictor.reliability.RetryTask;
-import it.workflow.predictor.reliability.UniformRetryTask;
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

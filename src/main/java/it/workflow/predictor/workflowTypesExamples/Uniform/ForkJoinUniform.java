@@ -1,5 +1,5 @@
 
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.DAG;
@@ -13,16 +13,15 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import java.util.Locale;
 
-/** T1 ~ Uniforme(1,5), T2 ~ Uniforme(2,3), in sequenza. */
-public final class SequentialUniformWorkflow {
+public class ForkJoinUniform {
 
-    private SequentialUniformWorkflow() {}
+    private ForkJoinUniform() {}
 
     public static void main(String[] args) {
 
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.sequence(
-                "WorkflowSequenziale",
+        Activity workflow = DAG.forkJoin(
+                "WorkflowForkJoin",
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),
@@ -43,13 +42,13 @@ public final class SequentialUniformWorkflow {
 
         // 2. Analisi con Eulero
         String timeBound = "20";
-        String timeStep = "0.05";
+        String timeStep = "0.1";
         String error = "0.0001";
 
         TransientSolution<DeterministicEnablingState, RewardRate> result =
                 workflow.analyze(timeBound, timeStep, error);
 
-        // 3. Probabilita' di completare entro 5.5 secondi
+        // 3. Lettura della CDF a 5.5 secondi
         int index = new BigDecimal("5.5")
                 .divide(new BigDecimal(timeStep))
                 .intValueExact();
@@ -63,14 +62,13 @@ public final class SequentialUniformWorkflow {
         );
 
         System.out.println(
-                "Valore teorico atteso: 0.500000"
+                "Valore teorico atteso: 1.000000"
         );
 
-        // 4. Esportazione dell'intera CDF
+        // 4. Esportazione dell'intera CDF in CSV
         try (PrintWriter writer =
-                     new PrintWriter("python/sequence_no_retry_cdf.csv")) {
+                     new PrintWriter("python/fork_join_no_retry_cdf.csv")) {
 
-            // Intestazione
             writer.println("time,cdf");
 
             double step = new BigDecimal(timeStep).doubleValue();
@@ -78,10 +76,7 @@ public final class SequentialUniformWorkflow {
 
             for (int i = 0; i < solution.length; i++) {
 
-                // Istante temporale corrispondente all'indice i
                 double time = i * step;
-
-                // Valore della CDF all'istante time
                 double cdf = solution[i][0][0];
 
                 writer.printf(
@@ -93,7 +88,7 @@ public final class SequentialUniformWorkflow {
             }
 
             System.out.println(
-                    "CDF esportata in sequence_no_retry_cdf.csv"
+                    "CDF esportata in fork_join_no_retry_cdf.csv"
             );
 
         } catch (IOException e) {

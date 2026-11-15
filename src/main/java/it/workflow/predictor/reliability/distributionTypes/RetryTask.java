@@ -1,5 +1,6 @@
-package it.workflow.predictor.reliability;
+package it.workflow.predictor.reliability.distributionTypes;
 
+import it.workflow.predictor.reliability.RetryConfig;
 import org.oristool.eulero.modeling.Activity;
 
 public interface RetryTask {

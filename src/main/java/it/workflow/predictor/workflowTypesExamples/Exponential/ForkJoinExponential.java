@@ -1,5 +1,5 @@
 
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Exponential;
 
 import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.DAG;
@@ -20,9 +20,9 @@ import java.util.Locale;
  * T1 ~ Exp(0.5)
  * T2 ~ Exp(0.8)
  */
-public final class ForkJoinExponentialWorkflow {
+public final class ForkJoinExponential {
 
-    private ForkJoinExponentialWorkflow() {}
+    private ForkJoinExponential() {}
 
     public static void main(String[] args) {
 

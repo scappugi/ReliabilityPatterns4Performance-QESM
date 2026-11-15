@@ -1,10 +1,10 @@
 
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Exponential;
 
 import it.workflow.predictor.evaluation.ScenarioEvaluator;
 import it.workflow.predictor.evaluation.ScenarioMixer;
-import it.workflow.predictor.reliability.ExponentialRetryTask;
-import it.workflow.predictor.reliability.RetryTask;
+import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
@@ -25,9 +25,9 @@ import java.nio.file.Path;
  * T1 ~ Exp(0.5), timeout=3, maxRetries=2
  * T2 ~ Exp(0.8), timeout=2.5, maxRetries=1
  */
-public final class ForkJoinExponentialWorkflowRetry {
+public final class ForkJoinExponentialRetry {
 
-    private ForkJoinExponentialWorkflowRetry() {}
+    private ForkJoinExponentialRetry() {}
 
     public static void main(String[] args) {
 

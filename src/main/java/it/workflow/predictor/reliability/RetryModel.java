@@ -1,6 +1,8 @@
 
 package it.workflow.predictor.reliability;
 
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+
 public final class RetryModel {
 
     private RetryModel() {}

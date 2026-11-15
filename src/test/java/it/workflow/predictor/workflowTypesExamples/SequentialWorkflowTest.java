@@ -1,4 +1,4 @@
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;

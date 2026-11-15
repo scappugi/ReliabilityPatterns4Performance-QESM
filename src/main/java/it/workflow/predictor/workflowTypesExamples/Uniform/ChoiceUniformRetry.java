@@ -1,11 +1,11 @@
-package it.workflow.predictor.examples;
+package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import it.workflow.predictor.evaluation.ScenarioEvaluator;
 import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
-import it.workflow.predictor.reliability.UniformRetryTask;
+import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import java.io.IOException;
  * Viene scelto un solo task, con probabilità 0.5.
  * Entrambi i task possono avere retry.
  */
-public final class ChoiceUniformWorkflowRetry {
+public final class ChoiceUniformRetry {
 
-    private ChoiceUniformWorkflowRetry() {}
+    private ChoiceUniformRetry() {}
 
     public static void main(String[] args) {
 

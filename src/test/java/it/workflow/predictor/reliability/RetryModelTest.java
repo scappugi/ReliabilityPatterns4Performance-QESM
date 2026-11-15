@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+
+import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 import org.junit.jupiter.api.Test;
 
 class RetryModelTest {

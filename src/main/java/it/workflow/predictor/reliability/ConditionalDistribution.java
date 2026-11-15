@@ -1,6 +1,8 @@
 package it.workflow.predictor.reliability;
 
 import java.math.BigDecimal;
+
+import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 import org.oristool.eulero.modeling.Simple;
 
 /** Eq. (2): per R~U(a,b), (R | R<=t) e' U(a,min(b,t)), se p>0. */

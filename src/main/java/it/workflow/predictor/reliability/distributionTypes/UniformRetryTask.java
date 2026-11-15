@@ -1,7 +1,10 @@
-package it.workflow.predictor.reliability;
+package it.workflow.predictor.reliability.distributionTypes;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import it.workflow.predictor.reliability.ConditionalDistribution;
+import it.workflow.predictor.reliability.RetryConfig;
 import org.oristool.eulero.modeling.Simple;
 
 /** Dati minimi per una Simple uniforme di Eulero con una politica di retry. */

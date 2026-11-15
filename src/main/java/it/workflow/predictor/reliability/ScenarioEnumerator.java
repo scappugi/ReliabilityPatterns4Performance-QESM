@@ -1,5 +1,7 @@
 package it.workflow.predictor.reliability;
 
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
