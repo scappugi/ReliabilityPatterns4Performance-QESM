@@ -37,21 +37,8 @@ public final class ChoiceUniformRetry {
                         new BigDecimal("1"),
                         new BigDecimal("5"),
                         new RetryConfig(new BigDecimal("3"), 2)
-                ),
-        new UniformRetryTask(
-                "T3",
-                new BigDecimal("2"),
-                new BigDecimal("7"),
-                new RetryConfig(new BigDecimal("5"), 2)
-        ),
-        new UniformRetryTask(
-                "T4",
-                new BigDecimal("5"),
-                new BigDecimal("8"),
-                new RetryConfig(new BigDecimal("6"), 2)
-        )
+                )
         );
-
         List<UniformRetryTask> tasksT2 = Arrays.asList(
                 new UniformRetryTask(
                         "T2",
@@ -82,7 +69,7 @@ public final class ChoiceUniformRetry {
                     ScenarioEvaluator.evaluate(
                             tasksT1,
                             scenario,
-                            ScenarioEvaluator.Composition.FORK_JOIN,
+                            ScenarioEvaluator.Composition.SEQUENCE,
                             bound,
                             step,
                             error
@@ -173,7 +160,7 @@ public final class ChoiceUniformRetry {
         // 8. Esportazione dell'intera CDF
 
         try (PrintWriter writer =
-                     new PrintWriter("python/choice_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/choice_retry_cdf.csv")) {
 
             writer.println("time,cdf");
 

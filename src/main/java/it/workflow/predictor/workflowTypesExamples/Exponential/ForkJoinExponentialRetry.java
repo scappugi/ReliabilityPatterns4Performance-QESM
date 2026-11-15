@@ -102,7 +102,7 @@ public final class ForkJoinExponentialRetry {
         // 6. Esportazione dell'intera CDF
         try {
             Path output = Path.of(
-                    "python/fork_join_exponential_retry_cdf.csv"
+                    "python/exponential/fork_join_exponential_retry_cdf.csv"
             );
 
             Files.createDirectories(output.getParent());

@@ -78,7 +78,7 @@ public final class ChoiceUniform {
 
         // 5. Esportazione dell'intera CDF
         try (PrintWriter writer =
-                     new PrintWriter("python/choice_no_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/choice_no_retry_cdf.csv")) {
 
             writer.println("time,cdf");
 

@@ -68,7 +68,7 @@ public final class SequentialUniform {
 
         // 4. Esportazione dell'intera CDF
         try (PrintWriter writer =
-                     new PrintWriter("python/sequence_no_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/sequence_no_retry_cdf.csv")) {
 
             // Intestazione
             writer.println("time,cdf");

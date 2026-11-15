@@ -42,7 +42,7 @@ public final class SequentialUniformRetry {
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
 
         try (PrintWriter writer =
-                     new PrintWriter("python/sequence_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/sequence_retry_cdf.csv")) {
 
             // Intestazione del file CSV
             writer.println("time,cdf");

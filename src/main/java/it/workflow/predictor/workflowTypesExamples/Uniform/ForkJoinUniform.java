@@ -67,7 +67,7 @@ public class ForkJoinUniform {
 
         // 4. Esportazione dell'intera CDF in CSV
         try (PrintWriter writer =
-                     new PrintWriter("python/fork_join_no_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/fork_join_no_retry_cdf.csv")) {
 
             writer.println("time,cdf");
 

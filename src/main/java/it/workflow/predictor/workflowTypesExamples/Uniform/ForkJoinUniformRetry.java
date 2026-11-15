@@ -42,7 +42,7 @@ public class ForkJoinUniformRetry {
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
 
         try (PrintWriter writer =
-                     new PrintWriter("python/fork_join_retry_cdf.csv")) {
+                     new PrintWriter("python/uniform/fork_join_retry_cdf.csv")) {
 
             // Intestazione del file CSV
             writer.println("time,cdf");
