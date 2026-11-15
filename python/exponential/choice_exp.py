@@ -23,7 +23,7 @@ plt.plot(
 
 plt.xlabel("Tempo di risposta (secondi)")
 plt.ylabel("CDF - Probabilità cumulativa")
-plt.title("Confronto Choice: con e senza retry")
+plt.title("Confronto Choice di esponenziali: con e senza retry")
 plt.ylim(0, 1.05)
 plt.grid(True, alpha=0.3)
 plt.legend()

@@ -23,7 +23,7 @@ plt.plot(
 
 plt.xlabel("Tempo di risposta (secondi)")
 plt.ylabel("CDF - Probabilità cumulativa")
-plt.title("Confronto Fork-Join: con e senza retry")
+plt.title("Confronto Fork-Join di esponenziali: con e senza retry")
 plt.ylim(0, 1.05)
 plt.grid(True, alpha=0.3)
 plt.legend()

@@ -24,7 +24,7 @@ plt.plot(
 
 plt.xlabel("Tempo di risposta (secondi)")
 plt.ylabel("CDF - Probabilità cumulativa")
-plt.title("Confronto sequenza: con e senza retry")
+plt.title("Confronto sequenza di uniformi: con e senza retry")
 
 plt.xlim(0, 20)
 plt.ylim(0, 1.05)
