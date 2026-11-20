@@ -52,7 +52,7 @@ public final class ForkJoinHyperExponentialRetry {
         System.out.printf(Locale.US, "P(T_workflow <= 5 s) = %.6f%n", finalCdf[index]);
 
         try {
-            Path output = Path.of("python/hyperexponential/forkjoin_hyperexponential_retry_cdf.csv");
+            Path output = Path.of("python/hyperexponential/fork_join_hyperexponential_retry_cdf.csv");
             Files.createDirectories(output.getParent());
             try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(output))) {
                 writer.println("time,cdf");

@@ -42,7 +42,7 @@ public final class ForkJoinHyperExponential {
         for (int i = 0; i < solution.length; i++) finalCdf[i] = solution[i][0][0];
 
         try {
-            Path output = Path.of("python/hyperexponential/forkjoin_hyperexponential_no_retry_cdf.csv");
+            Path output = Path.of("python/hyperexponential/fork_join_hyperexponential_no_retry_cdf.csv");
             Files.createDirectories(output.getParent());
             try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(output))) {
                 writer.println("time,cdf");
