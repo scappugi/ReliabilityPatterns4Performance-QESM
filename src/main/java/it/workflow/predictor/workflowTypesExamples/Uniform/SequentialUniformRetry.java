@@ -64,7 +64,7 @@ public final class SequentialUniformRetry {
             }
 
             System.out.println(
-                    "CDF esportata in sequential_retry_cdf.csv"
+                    "CDF esportata in sequence_retry_cdf.csv"
             );
 
         } catch (IOException e) {

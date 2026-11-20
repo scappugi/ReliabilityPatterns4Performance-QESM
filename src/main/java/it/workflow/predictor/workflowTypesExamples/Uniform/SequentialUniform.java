@@ -22,7 +22,7 @@ public final class SequentialUniform {
 
         // 1. Costruzione del workflow senza retry
         Activity workflow = DAG.sequence(
-                "WorkflowSequenziale",
+                "WorkflowSequentialUniform",
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),

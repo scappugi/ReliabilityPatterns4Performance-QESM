@@ -99,7 +99,7 @@ public final class ChoiceUniform {
             }
 
             System.out.println(
-                    "CDF esportata in choice_uniform_cdf.csv"
+                    "CDF esportata in choice_no_retry_cdf.csv"
             );
 
         } catch (IOException e) {
