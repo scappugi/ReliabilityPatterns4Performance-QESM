@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Lettura dei CSV
 no_retry = pd.read_csv("sequential_hyperexponential_no_retry_cdf.csv")
 with_retry = pd.read_csv("sequential_hyperexponential_retry_cdf.csv")
-xor = pd.read_csv("sequential_hyperexponential_one_shot_cdf.csv")
+xor = pd.read_csv("sequence_hyperexponential_one_shot_cdf.csv")
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5), sharex=True, sharey=True)
 
