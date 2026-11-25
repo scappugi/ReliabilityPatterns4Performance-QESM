@@ -31,22 +31,13 @@ public final class ChoiceUniformOneShot {
         String step = "0.05";
         String error = "0.0001";
 
-        // Coerente con ChoiceUniformRetry / ChoiceErlangRetry originali:
         // primo ramo FORK_JOIN(T1,T3,T4), secondo ramo T2.
         RetryTask t1 = new UniformRetryTask("T1", bd("1"), bd("5"), new RetryConfig(bd("3"), 2));
-        RetryTask t3 = new UniformRetryTask("T3", bd("2"), bd("7"), new RetryConfig(bd("5"), 2));
-        RetryTask t4 = new UniformRetryTask("T4", bd("5"), bd("8"), new RetryConfig(bd("6"), 2));
         RetryTask t2 = new UniformRetryTask("T2", bd("2"), bd("3"), new RetryConfig(bd("2.5"), 1));
 
-        // Un'unica topologia con XOR di retry per ciascun task.
-        Activity firstBranch = DAG.forkJoin(
-                "FirstBranchUniformOneShot",
-                OneShotTaskBuilder.build(t1),
-                OneShotTaskBuilder.build(t3),
-                OneShotTaskBuilder.build(t4));
         Activity workflow = new XOR(
                 "ChoiceUniformOneShot",
-                Arrays.asList(firstBranch, OneShotTaskBuilder.build(t2)),
+                Arrays.asList(OneShotTaskBuilder.build(t1), OneShotTaskBuilder.build(t2)),
                 Arrays.asList(0.5, 0.5));
 
         // Una sola chiamata a Eulero (niente scenario enumeration/mixer).

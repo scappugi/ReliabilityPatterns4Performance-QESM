@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import it.workflow.predictor.reliability.ConditionalDistribution;
 import it.workflow.predictor.reliability.RetryConfig;
+import it.workflow.predictor.reliability.RetryModel;
 import org.oristool.eulero.modeling.Simple;
 
 /** Dati minimi per una Simple uniforme di Eulero con una politica di retry. */
@@ -53,11 +54,23 @@ public final class UniformRetryTask implements RetryTask {
         return (time - a) / (b - a);
     }
 
+//    @Override
+//    public Simple successfulAttempt(String activityName) {
+//        return ConditionalDistribution.uniformSuccess(
+//                this, activityName
+//        );
+//
+
     @Override
     public Simple successfulAttempt(String activityName) {
-        return ConditionalDistribution.uniformSuccess(
-                this, activityName
-        );
+        {
+            if (RetryModel.successProbability(this) <= 0.0) {
+                throw new IllegalArgumentException(
+                        "La distribuzione condizionata non esiste per p=0");
+            }
+            BigDecimal upper = this.retry().timeout().min(this.max());
+            return Simple.uniform(activityName, this.min(), upper);
+        }
     }
 
 }

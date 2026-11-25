@@ -19,7 +19,7 @@ public final class RetryModel {
     public static double successProbability(RetryTask task) {
 
         return task.cdf(
-                task.retry().timeout().doubleValue()
+                task.retry().timeout().doubleValue() // semplicemente recuperi il timeout da un RetryConfig
         );
     }
 
