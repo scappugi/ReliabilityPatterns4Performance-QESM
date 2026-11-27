@@ -1,8 +1,8 @@
 package it.workflow.predictor.workflowTypesExamples.Mix;
 
 import org.oristool.eulero.modeling.Activity;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
-import org.oristool.eulero.modeling.XOR;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -32,10 +32,10 @@ public class ChoiceMix {
         );
 
         // 2. Costruzione del workflow Choice (XOR)
-        Activity workflow = new XOR(
-                "WorkflowChoiceMix",
-                Arrays.asList(task1, task2),
-                Arrays.asList(0.5, 0.5)
+        Activity workflow = ModelFactory.XOR(
+                Arrays.asList(0.5, 0.5),
+                task1,
+                task2
         );
 
         System.out.println("Workflow: " + workflow.name());

@@ -1,7 +1,7 @@
 package it.workflow.predictor.workflowTypesExamples.Mix;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -19,8 +19,8 @@ public class SequentialMix {
     public static void main(String[] args) {
 
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.sequence(
-                "WorkflowSequentialMix",
+        System.out.println("WorkflowSequentialMix");
+        Activity workflow = ModelFactory.sequence(
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),

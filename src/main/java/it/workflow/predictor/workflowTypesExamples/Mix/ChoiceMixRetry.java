@@ -5,8 +5,9 @@ import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
-import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
-import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +25,7 @@ public class ChoiceMixRetry {
 
         // 1. Definizione dei task con le rispettive configurazioni di retry
 
-        List<UniformRetryTask> tasksT1 = Arrays.asList(
+        /*List<UniformRetryTask> tasksT1 = Arrays.asList(
                 new UniformRetryTask(
                         "T1",
                         new BigDecimal("1"),
@@ -36,6 +37,27 @@ public class ChoiceMixRetry {
                 new ExponentialRetryTask(
                         "T2",
                         new BigDecimal("2"),
+                        new RetryConfig(new BigDecimal("2.5"), 1)
+                )
+        );*/
+
+        List<RetryTask> tasksT1 = Arrays.asList(
+                new RetryTask(
+                        "T1",
+                        new UniformTime(
+                                new BigDecimal("1"),
+                                new BigDecimal("5")
+                        ),
+                        new RetryConfig(new BigDecimal("3"), 2)
+                )
+        );
+
+        List<RetryTask> tasksT2 = Arrays.asList(
+                new RetryTask(
+                        "T2",
+                        new ExponentialTime(
+                                new BigDecimal("2")
+                        ),
                         new RetryConfig(new BigDecimal("2.5"), 1)
                 )
         );

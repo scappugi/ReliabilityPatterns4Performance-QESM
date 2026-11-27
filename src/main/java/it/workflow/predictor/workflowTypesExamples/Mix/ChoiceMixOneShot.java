@@ -2,13 +2,12 @@ package it.workflow.predictor.workflowTypesExamples.Mix;
 
 import it.workflow.predictor.evaluation.OneShotTaskBuilder;
 import it.workflow.predictor.reliability.RetryConfig;
-import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
-import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
-import org.oristool.eulero.modeling.XOR;
+import org.oristool.eulero.modeling.ModelFactory;
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -32,12 +31,29 @@ public final class ChoiceMixOneShot {
     private ChoiceMixOneShot() {}
 
     public static void main(String[] args) {
-        RetryTask t1 = new UniformRetryTask(
+        /*RetryTask t1 = new UniformRetryTask(
                 "T1", new BigDecimal("1"), new BigDecimal("5"),
                 new RetryConfig(new BigDecimal("3"), 2)
         );
         RetryTask t2 = new ExponentialRetryTask(
                 "T2", new BigDecimal("2"),
+                new RetryConfig(new BigDecimal("2.5"), 1)
+        );*/
+
+        RetryTask t1 = new RetryTask(
+                "T1",
+                new UniformTime(
+                        new BigDecimal("1"),
+                        new BigDecimal("5")
+                ),
+                new RetryConfig(new BigDecimal("3"), 2)
+        );
+
+        RetryTask t2 = new RetryTask(
+                "T2",
+                new ExponentialTime(
+                        new BigDecimal("2")
+                ),
                 new RetryConfig(new BigDecimal("2.5"), 1)
         );
 
@@ -47,13 +63,20 @@ public final class ChoiceMixOneShot {
 
         // Ogni RetryTask diventa una XOR locale delle sue possibili durate.
         // La topologia esterna (choice) e' indipendente dal tipo di distribuzione.
-        Activity workflow = new XOR(
+        /*Activity workflow = new XOR(
                 "ChoiceMixOneShot",
                 Arrays.asList(
                         OneShotTaskBuilder.build(t1),
                         OneShotTaskBuilder.build(t2)
                 ),
                 Arrays.asList(0.5, 0.5)
+        );*/
+
+        System.out.println("ChoiceMixOneShot");
+        Activity workflow = ModelFactory.XOR(
+                Arrays.asList(0.5, 0.5),
+                OneShotTaskBuilder.build(t1),
+                OneShotTaskBuilder.build(t2)
         );
 
         // Una sola analisi Eulero dell'intero workflow.

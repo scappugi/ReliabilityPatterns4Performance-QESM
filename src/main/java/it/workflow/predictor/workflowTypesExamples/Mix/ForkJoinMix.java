@@ -1,7 +1,7 @@
 package it.workflow.predictor.workflowTypesExamples.Mix;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -20,8 +20,8 @@ public class ForkJoinMix {
     public static void main(String[] args) {
 
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.forkJoin(
-                "WorkflowForkJoinMix",
+        System.out.println("WorkflowForkJoinMix");
+        Activity workflow = ModelFactory.forkJoin(
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),

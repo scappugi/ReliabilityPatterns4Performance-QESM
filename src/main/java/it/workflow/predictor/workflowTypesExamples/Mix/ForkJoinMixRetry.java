@@ -5,9 +5,9 @@ import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
-import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
-import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,11 +23,31 @@ public class ForkJoinMixRetry {
 
     public static void main(String[] args) {
 
-        List<RetryTask> tasks = Arrays.asList(
+        /*List<RetryTask> tasks = Arrays.asList(
                 new UniformRetryTask("T1", new BigDecimal("1"), new BigDecimal("5"),
                         new RetryConfig(new BigDecimal("3"), 2)),
                 new ExponentialRetryTask("T2", new BigDecimal("2"),
                         new RetryConfig(new BigDecimal("2.5"), 1))
+        );*/
+
+        List<RetryTask> tasks = Arrays.asList(
+
+                new RetryTask(
+                        "T1",
+                        new UniformTime(
+                                new BigDecimal("1"),
+                                new BigDecimal("5")
+                        ),
+                        new RetryConfig(new BigDecimal("3"), 2)
+                ),
+
+                new RetryTask(
+                        "T2",
+                        new ExponentialTime(
+                                new BigDecimal("2")
+                        ),
+                        new RetryConfig(new BigDecimal("2.5"), 1)
+                )
         );
 
         String bound = "20";

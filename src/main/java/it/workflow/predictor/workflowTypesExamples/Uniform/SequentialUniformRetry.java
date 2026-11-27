@@ -6,7 +6,6 @@ import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
-import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
 import org.oristool.eulero.modeling.stochastictime.UniformTime;
 
 import java.math.BigDecimal;
