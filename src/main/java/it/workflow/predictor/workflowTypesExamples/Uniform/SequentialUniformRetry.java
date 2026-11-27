@@ -5,7 +5,9 @@ import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
 import it.workflow.predictor.reliability.distributionTypes.UniformRetryTask;
+import org.oristool.eulero.modeling.stochastictime.UniformTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,12 +22,35 @@ public final class SequentialUniformRetry {
     private SequentialUniformRetry() {}
 
     public static void main(String[] args) {
-        List<UniformRetryTask> tasks = Arrays.asList(
-            new UniformRetryTask("T1", new BigDecimal("1"), new BigDecimal("5"),
-                new RetryConfig(new BigDecimal("3"), 2)),
-            new UniformRetryTask("T2", new BigDecimal("2"), new BigDecimal("3"),
-                new RetryConfig(new BigDecimal("2.5"), 1))
+//        List<UniformRetryTask> tasks = Arrays.asList(
+//            new UniformRetryTask("T1", new BigDecimal("1"), new BigDecimal("5"),
+//                new RetryConfig(new BigDecimal("3"), 2)),
+//            new UniformRetryTask("T2", new BigDecimal("2"), new BigDecimal("3"),
+//                new RetryConfig(new BigDecimal("2.5"), 1))
+//        );
+
+        // 1. Definizione dei task
+        List<RetryTask> tasks = Arrays.asList(
+
+                new RetryTask(
+                        "T1",
+                        new UniformTime(
+                                new BigDecimal("1"),
+                                new BigDecimal("5")
+                        ),
+                        new RetryConfig(new BigDecimal("3"), 2)
+                ),
+
+                new RetryTask(
+                        "T2",
+                        new UniformTime(
+                                new BigDecimal("2"),
+                                new BigDecimal("3")
+                        ),
+                        new RetryConfig(new BigDecimal("2.5"), 1)
+                )
         );
+
         String bound = "20";
         String step = "0.05";
         List<RetryScenario> scenarios = ScenarioEnumerator.enumerate(tasks);

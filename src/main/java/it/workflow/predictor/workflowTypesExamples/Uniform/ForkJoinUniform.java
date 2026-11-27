@@ -2,7 +2,7 @@
 package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -19,9 +19,9 @@ public class ForkJoinUniform {
 
     public static void main(String[] args) {
 
+        System.out.println("WorkflowForkJoinUniform");
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.forkJoin(
-                "WorkflowForkJoin",
+        Activity workflow = ModelFactory.forkJoin(
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),

@@ -2,7 +2,7 @@
 package it.workflow.predictor.workflowTypesExamples.Uniform;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -20,9 +20,9 @@ public final class SequentialUniform {
 
     public static void main(String[] args) {
 
+        System.out.println("WorkflowSequentialUniform");
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.sequence(
-                "WorkflowSequentialUniform",
+        Activity workflow = ModelFactory.sequence(
                 Simple.uniform(
                         "T1",
                         new BigDecimal("1"),

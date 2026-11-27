@@ -4,8 +4,7 @@ import it.workflow.predictor.evaluation.OneShotTaskBuilder;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
-import org.oristool.eulero.modeling.XOR;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -35,10 +34,12 @@ public final class ChoiceUniformOneShot {
         RetryTask t1 = new UniformRetryTask("T1", bd("1"), bd("5"), new RetryConfig(bd("3"), 2));
         RetryTask t2 = new UniformRetryTask("T2", bd("2"), bd("3"), new RetryConfig(bd("2.5"), 1));
 
-        Activity workflow = new XOR(
-                "ChoiceUniformOneShot",
-                Arrays.asList(OneShotTaskBuilder.build(t1), OneShotTaskBuilder.build(t2)),
-                Arrays.asList(0.5, 0.5));
+        System.out.println("ChoiceUniformOneShot");
+        Activity workflow = ModelFactory.XOR(
+                Arrays.asList(0.5, 0.5),
+                OneShotTaskBuilder.build(t1),
+                OneShotTaskBuilder.build(t2)
+        );
 
         // Una sola chiamata a Eulero (niente scenario enumeration/mixer).
         TransientSolution<DeterministicEnablingState, RewardRate> result =

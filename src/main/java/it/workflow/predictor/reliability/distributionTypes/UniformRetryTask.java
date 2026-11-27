@@ -3,7 +3,7 @@ package it.workflow.predictor.reliability.distributionTypes;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import it.workflow.predictor.reliability.ConditionalDistribution;
+
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryModel;
 import org.oristool.eulero.modeling.Simple;
