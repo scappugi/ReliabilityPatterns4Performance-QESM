@@ -1,7 +1,7 @@
 package it.workflow.predictor.workflowTypesExamples.Erlang;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -21,9 +21,9 @@ public final class ForkJoinErlang {
 
     public static void main(String[] args) {
 
+        System.out.println("WorkflowForkJoinErlang");
         // 1. Costruzione del workflow originale senza retry.
-        Activity workflow = DAG.forkJoin(
-                "WorkflowForkJoinErlang",
+        Activity workflow = ModelFactory.forkJoin(
                 Simple.erlang("T1", 2, new BigDecimal("1")),
                 Simple.erlang("T2", 3, new BigDecimal("1.5"))
         );

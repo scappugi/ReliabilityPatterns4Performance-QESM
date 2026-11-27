@@ -1,92 +1,106 @@
+
 package it.workflow.predictor.evaluation;
 
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
-import org.oristool.eulero.modeling.XOR;
-import org.oristool.models.stpn.trees.StochasticTransitionFeature;
+import org.oristool.eulero.modeling.stochastictime.DeterministicTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * One-shot: sostituisce un task con la XOR delle possibili durate dovute ai retry.
- * Equazioni (1)-(3) del progetto: i rami hanno pesi D_n e durata n*timeout+R_cond,
- * salvo l'ultimo (n=c), che termina con la distribuzione originale non troncata.
- *
- * Non enumera scenari GLOBALI e non esegue analisi Eulero.
- */
 public final class OneShotTaskBuilder {
+
     private OneShotTaskBuilder() {}
 
     public static Activity build(RetryTask task) {
-        if (task == null || task.retry() == null) {
-            throw new IllegalArgumentException("Task e RetryConfig obbligatori");
-        }
-        final int c = task.retry().maxRetries();
-        final BigDecimal timeout = task.retry().timeout();
-        if (c < 0 || timeout == null || timeout.signum() <= 0) {
-            throw new IllegalArgumentException("Retry massimi o timeout non validi");
-        }
-        // Nessun retry: non serve neppure un nodo XOR.
+
+        int c = task.retry().maxRetries();
+        BigDecimal timeout = task.retry().timeout();
+
+        // Nessun retry: tentativo originale senza timeout
         if (c == 0) {
-            return task.originalActivity("_oneShot_original");
+            return task.originalActivity("_original");
         }
 
-        final double p = task.cdf(timeout.doubleValue());
+        double p = task.cdf(timeout.doubleValue());
+
         if (!Double.isFinite(p) || p < 0.0 || p > 1.0) {
-            throw new IllegalArgumentException("F(timeout) non valida: " + p);
+            throw new IllegalArgumentException(
+                    "Probabilita' di successo non valida");
         }
 
         List<Activity> branches = new ArrayList<>();
         List<Double> weights = new ArrayList<>();
-        double timeoutProbability = 1.0 - p;
-        double previousTimeoutsProbability = 1.0;
 
         for (int n = 0; n <= c; n++) {
-            double weight = n < c
-                    ? previousTimeoutsProbability * p
-                    : previousTimeoutsProbability;
 
-            // Escludere rami impossibili evita di costruire una condizionata se F(timeout)=0.
-            if (weight > 0.0) {
-                String branchName = task.name() + "_oneShot_retry" + n;
-                Activity lastAttempt = (n < c)
-                        ? task.successfulAttempt(branchName + "_success")
-                        : task.originalActivity("_oneShot_last" + n);
+            double weight = Math.pow(1.0 - p, n);
 
-                Activity branch;
-                if (n == 0) {
-                    branch = lastAttempt;
-                } else {
-                    BigDecimal delay = timeout.multiply(BigDecimal.valueOf(n));
-                    Activity delayActivity = new Simple(
-                            branchName + "_delay",
-                            StochasticTransitionFeature.newDeterministicInstance(delay)
-                    );
-                    branch = DAG.sequence(branchName, delayActivity, lastAttempt);
-                }
-                branches.add(branch);
-                weights.add(weight);
+            if (n < c) {
+                weight *= p;
             }
-            previousTimeoutsProbability *= timeoutProbability;
+
+            // Gli scenari con probabilita' nulla si ignorano
+            if (weight <= 0.0) {
+                continue;
+            }
+
+            Activity attempt;
+
+            if (n < c) {
+                // Ultimo tentativo riuscito entro timeout
+                attempt = task.successfulAttempt(
+                        task.name() + "_success_" + n);
+            } else {
+                // Esauriti i retry: tentativo senza timeout
+                attempt = task.originalActivity(
+                        "_final_" + n);
+            }
+
+            Activity branch = attempt;
+
+            if (n > 0) {
+                // Tempo consumato dai tentativi interrotti
+                BigDecimal delay =
+                        timeout.multiply(BigDecimal.valueOf(n));
+
+                Activity delayActivity = new Simple(
+                        task.name() + "_delay_" + n,
+                        new DeterministicTime(delay)
+                );
+
+                branch = ModelFactory.sequence(
+                        delayActivity,
+                        attempt
+                );
+            }
+
+            branches.add(branch);
+            weights.add(weight);
         }
 
-        if (branches.isEmpty()) {
-            throw new IllegalStateException("Nessun ramo di retry valido per " + task.name());
-        }
         if (branches.size() == 1) {
             return branches.get(0);
         }
 
-        // Riduce gli errori di arrotondamento nei pesi (la somma teorica e' 1).
-        double sum = 0.0;
-        for (double w : weights) sum += w;
-        for (int i = 0; i < weights.size(); i++) {
-            weights.set(i, weights.get(i) / sum);
+        // Normalizzazione contro gli arrotondamenti
+        double total = weights.stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+
+        List<Double> normalized = new ArrayList<>();
+
+        for (double weight : weights) {
+            normalized.add(weight / total);
         }
-        return new XOR(task.name() + "_oneShot_XOR", branches, weights);
+
+        return ModelFactory.XOR(
+                normalized,
+                branches.toArray(new Activity[0])
+        );
     }
 }

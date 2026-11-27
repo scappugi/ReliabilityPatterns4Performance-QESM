@@ -1,8 +1,9 @@
 package it.workflow.predictor.workflowTypesExamples.Erlang;
 
 import org.oristool.eulero.modeling.Activity;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
-import org.oristool.eulero.modeling.XOR;
+import org.oristool.eulero.modeling.stochastictime.ErlangTime;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -23,12 +24,16 @@ public final class ChoiceErlang {
 
         // Struttura IDENTICA al ChoiceUniform.java originale:
         // scelta fra due singoli task (diversa dal ramo fork/join del caso retry).
-        Activity task1 = Simple.erlang("T1", 2, new BigDecimal("1"));
-        Activity task2 = Simple.erlang("T2", 3, new BigDecimal("1.5"));
 
-        Activity workflow = new XOR("WorkflowChoiceErlang",
-                Arrays.asList(task1, task2),
-                Arrays.asList(0.5, 0.5));
+        Activity task1 = new Simple("T1", new ErlangTime(2, 1.0));
+        Activity task2 = new Simple("T2", new ErlangTime(3, 1.5));
+
+
+        Activity workflow = ModelFactory.XOR(
+                Arrays.asList(0.5, 0.5),
+                task1,
+                task2
+                );
 
         System.out.println("Workflow: " + workflow.name());
 

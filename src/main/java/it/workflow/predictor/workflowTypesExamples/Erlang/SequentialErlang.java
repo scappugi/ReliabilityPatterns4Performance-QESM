@@ -1,8 +1,10 @@
 package it.workflow.predictor.workflowTypesExamples.Erlang;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
+import org.oristool.eulero.modeling.stochastictime.ErlangTime;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -22,11 +24,19 @@ public final class SequentialErlang {
     public static void main(String[] args) {
 
         // 1. Costruzione del workflow originale senza retry.
-        Activity workflow = DAG.sequence(
-                "WorkflowSequentialErlang",
-                Simple.erlang("T1", 2, new BigDecimal("1")),
-                Simple.erlang("T2", 3, new BigDecimal("1.5"))
-        );
+//        Activity workflow = DAG.sequence(
+//                "WorkflowSequentialErlang",
+//                Simple.erlang("T1", 2, new BigDecimal("1")),
+//                Simple.erlang("T2", 3, new BigDecimal("1.5"))
+//        );
+
+        // 1. Costruzione del workflow originale senza retry.
+        Activity workflow = ModelFactory.sequence(
+                new Simple("T1", new ErlangTime(2, 1.0)),
+                new Simple("T2", new ErlangTime(3, 1.5)));
+
+
+
 
         System.out.println("Workflow: " + workflow.name());
         // Le Erlang hanno supporto teorico illimitato, non [min,max] finito.

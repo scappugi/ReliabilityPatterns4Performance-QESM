@@ -30,13 +30,13 @@ public final class SequentialHyperExponentialRetry {
                         "T1",
                         Arrays.asList(new BigDecimal("0.8"), new BigDecimal("0.2")),
                         Arrays.asList(new BigDecimal("2"), new BigDecimal("0.1")),
-                        new RetryConfig(new BigDecimal("3"), 2)
+                        new RetryConfig(new BigDecimal("3"), 8)
                 ),
                 new HyperExponentialRetryTask(
                         "T2",
                         Arrays.asList(new BigDecimal("0.8"), new BigDecimal("0.2")),
                         Arrays.asList(new BigDecimal("1.5"), new BigDecimal("0.15")),
-                        new RetryConfig(new BigDecimal("2.5"), 1)
+                        new RetryConfig(new BigDecimal("2.5"), 10)
                 )
         );
         List<RetryScenario> scenarios = ScenarioEnumerator.enumerate(tasks);
