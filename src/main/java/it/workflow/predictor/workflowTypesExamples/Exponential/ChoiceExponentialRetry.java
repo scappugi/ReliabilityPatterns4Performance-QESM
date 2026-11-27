@@ -6,7 +6,9 @@ import it.workflow.predictor.evaluation.ScenarioMixer;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
-import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
+import it.workflow.predictor.reliability.distributionTypes.RetryTask;
+
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.io.IOException;
  * T1 ~ Exp(0.5)
  * T2 ~ Exp(0.8)
  *
- * Viene scelto un solo task, con probabilità 0.5.
+ * Viene scelto un solo task, con probabilita' 0.5.
  * Entrambi i task possono avere retry.
  */
 public final class ChoiceExponentialRetry {
@@ -33,18 +35,18 @@ public final class ChoiceExponentialRetry {
 
         // 1. Definizione dei task con le rispettive configurazioni di retry
 
-        List<ExponentialRetryTask> tasksT1 = Arrays.asList(
-                new ExponentialRetryTask(
+        List<RetryTask> tasksT1 = Arrays.asList(
+                new RetryTask(
                         "T1",
-                        new BigDecimal("0.5"),
+                        new ExponentialTime(new BigDecimal("0.5")),
                         new RetryConfig(new BigDecimal("3"), 2)
                 )
         );
 
-        List<ExponentialRetryTask> tasksT2 = Arrays.asList(
-                new ExponentialRetryTask(
+        List<RetryTask> tasksT2 = Arrays.asList(
+                new RetryTask(
                         "T2",
-                        new BigDecimal("0.8"),
+                        new ExponentialTime(new BigDecimal("0.8")),
                         new RetryConfig(new BigDecimal("2.5"), 1)
                 )
         );
@@ -83,7 +85,6 @@ public final class ChoiceExponentialRetry {
         double[] finalCdfT1 =
                 ScenarioMixer.mix(scenariosT1, cdfsT1);
 
-
         // 4. Enumerazione degli scenari di retry per T2
 
         List<RetryScenario> scenariosT2 =
@@ -114,20 +115,17 @@ public final class ChoiceExponentialRetry {
         double[] finalCdfT2 =
                 ScenarioMixer.mix(scenariosT2, cdfsT2);
 
-
         // 6. Choice tra T1 e T2
 
         double probabilityT1 = 0.5;
         double probabilityT2 = 0.5;
 
-        // Verifica delle probabilita' dei rami
         if (Math.abs(probabilityT1 + probabilityT2 - 1.0) > 1e-8) {
             throw new IllegalArgumentException(
                     "Le probabilita' della choice non sommano a 1"
             );
         }
 
-        // Le CDF devono avere la stessa griglia temporale
         if (finalCdfT1.length != finalCdfT2.length) {
             throw new IllegalArgumentException(
                     "Le CDF hanno lunghezze diverse"
@@ -137,7 +135,6 @@ public final class ChoiceExponentialRetry {
         int length = finalCdfT1.length;
         double[] finalCdf = new double[length];
 
-        // Mistura delle CDF dei due rami
         for (int i = 0; i < length; i++) {
 
             finalCdf[i] =
@@ -156,7 +153,6 @@ public final class ChoiceExponentialRetry {
                 "P(T_workflow <= 5 s) = %.6f%n",
                 finalCdf[index]
         );
-
 
         // 8. Esportazione dell'intera CDF
 

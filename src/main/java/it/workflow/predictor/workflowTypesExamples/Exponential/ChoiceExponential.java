@@ -1,8 +1,9 @@
+
 package it.workflow.predictor.workflowTypesExamples.Exponential;
 
 import org.oristool.eulero.modeling.Activity;
 import org.oristool.eulero.modeling.Simple;
-import org.oristool.eulero.modeling.XOR;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
 import org.oristool.models.stpn.trees.DeterministicEnablingState;
@@ -39,10 +40,10 @@ public final class ChoiceExponential {
         );
 
         // 2. Costruzione del workflow Choice (XOR)
-        Activity workflow = new XOR(
-                "WorkflowChoiceExponential",
-                Arrays.asList(task1, task2),
-                Arrays.asList(0.5, 0.5)
+        Activity workflow = ModelFactory.XOR(
+                Arrays.asList(0.5, 0.5),
+                task1,
+                task2
         );
 
         System.out.println("Workflow: " + workflow.name());

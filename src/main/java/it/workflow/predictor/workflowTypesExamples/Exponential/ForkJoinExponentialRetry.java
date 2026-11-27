@@ -3,11 +3,12 @@ package it.workflow.predictor.workflowTypesExamples.Exponential;
 
 import it.workflow.predictor.evaluation.ScenarioEvaluator;
 import it.workflow.predictor.evaluation.ScenarioMixer;
-import it.workflow.predictor.reliability.distributionTypes.ExponentialRetryTask;
 import it.workflow.predictor.reliability.distributionTypes.RetryTask;
 import it.workflow.predictor.reliability.RetryConfig;
 import it.workflow.predictor.reliability.RetryScenario;
 import it.workflow.predictor.reliability.ScenarioEnumerator;
+
+import org.oristool.eulero.modeling.stochastictime.ExponentialTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,18 +35,18 @@ public final class ForkJoinExponentialRetry {
         // 1. Definizione dei task con retry
         List<RetryTask> tasks = Arrays.asList(
 
-                new ExponentialRetryTask(
+                new RetryTask(
                         "T1",
-                        new BigDecimal("0.5"),
+                        new ExponentialTime(new BigDecimal("0.5")),
                         new RetryConfig(
                                 new BigDecimal("3"),
                                 2
                         )
                 ),
 
-                new ExponentialRetryTask(
+                new RetryTask(
                         "T2",
-                        new BigDecimal("0.8"),
+                        new ExponentialTime(new BigDecimal("0.8")),
                         new RetryConfig(
                                 new BigDecimal("2.5"),
                                 1

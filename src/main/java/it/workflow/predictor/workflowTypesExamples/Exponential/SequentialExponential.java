@@ -2,7 +2,7 @@
 package it.workflow.predictor.workflowTypesExamples.Exponential;
 
 import org.oristool.eulero.modeling.Activity;
-import org.oristool.eulero.modeling.DAG;
+import org.oristool.eulero.modeling.ModelFactory;
 import org.oristool.eulero.modeling.Simple;
 import org.oristool.models.stpn.RewardRate;
 import org.oristool.models.stpn.TransientSolution;
@@ -27,8 +27,7 @@ public final class SequentialExponential {
     public static void main(String[] args) {
 
         // 1. Costruzione del workflow senza retry
-        Activity workflow = DAG.sequence(
-                "WorkflowSequentialExponential",
+        Activity workflow = ModelFactory.sequence(
 
                 Simple.exp(
                         "T1",
